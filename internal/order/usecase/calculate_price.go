@@ -3,6 +3,7 @@ package usecase
 import (
 	"github.com/andersonszdc/my-orders/internal/order/entity"
 	"github.com/andersonszdc/my-orders/internal/order/infra/database"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 type OrderInputDTO struct {
