@@ -1,0 +1,18 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-orders
+spec:
+  selector:
+    matchLabels:
+      app: my-orders
+  template:
+    metadata:
+      labels:
+        app: my-orders
+    spec:
+      containers:
+        - name: my-orders
+          image: andersonszdc/my-orders:latest
+          ports:
+            - containerPort: 8080
