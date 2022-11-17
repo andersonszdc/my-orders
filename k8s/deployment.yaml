@@ -16,3 +16,70 @@ spec:
           image: andersonszdc/my-orders:latest
           ports:
             - containerPort: 8080
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: andersonszdc
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "12345"
+            - name: RABBITMQ_DEFAULT_WHOST
+              value: /
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+
+        - name: rabbitmq
+          image: rabbitmq:3.8.16-management
+          ports:
+            - name: amqp
+              containerPort: 5672
+            - name: management
+              containerPort: 15672
+            - name: prometheus
+              containerPort: 15692
+          env:
+            - name: RABBITMQ_DEFAULT_USER
+              value: andersonszdc
+            - name: RABBITMQ_DEFAULT_PASS
+              value: "12345"
+            - name: RABBITMQ_DEFAULT_WHOST
+              value: /
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+
+        - name: prometheus
+          image: prom/prometheus
+          ports:
+            - containerPort: 9090
+          args:
+            - "--config.file=/etc/prometheus/prometheus.yml"
+            - "--storage.tsdb.path=/prometheus/"
+            - "--web.console.libraries=/usr/share/prometheus/console_libraries"
+            - "--web.console.templates=/usr/share/prometheus/consoles"
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"
+
+        - name: grafana
+          image: grafana/grafana
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: 512Mi
+              cpu: "1"
+            requests:
+              memory: 256Mi
+              cpu: "0.2"

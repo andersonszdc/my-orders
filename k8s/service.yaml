@@ -6,5 +6,9 @@ spec:
   selector:
     app: my-orders
   ports:
-  - port: 8080
-    targetPort: 8080
+    - name: orders
+      port: 8080
+      targetPort: 8080
+    - name: rabbitmq
+      port: 15672
+      targetPort: 15672

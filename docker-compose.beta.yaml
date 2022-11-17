@@ -1,0 +1,9 @@
+version: "3.9"
+
+services:
+  server:
+    image: andersonszdc/my-orders:latest
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env

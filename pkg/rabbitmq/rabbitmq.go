@@ -1,9 +1,18 @@
 package rabbitmq
 
-import amqp "github.com/rabbitmq/amqp091-go"
+import (
+	"log"
+	"os"
+
+	amqp "github.com/rabbitmq/amqp091-go"
+)
 
 func OpenChannel() (*amqp.Channel, error) {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	var url string = os.Getenv("RABBITMQ_DEFAULT_URL")
+
+	log.Print(url)
+
+	conn, err := amqp.Dial(url)
 	if err != nil {
 		panic(err)
 	}

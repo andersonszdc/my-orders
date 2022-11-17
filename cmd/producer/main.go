@@ -1,8 +1,10 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"math/rand"
+	"os"
 	"time"
 
 	"github.com/andersonszdc/my-orders/internal/order/entity"
@@ -15,7 +17,12 @@ func Publish(ch *amqp.Channel, order entity.Order) error {
 	if err != nil {
 		return err
 	}
-	err = ch.Publish(
+
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
+	defer cancel()
+
+	err = ch.PublishWithContext(
+		ctx,
 		"amq.direct",
 		"",
 		false,
@@ -28,6 +35,7 @@ func Publish(ch *amqp.Channel, order entity.Order) error {
 	if err != nil {
 		return err
 	}
+
 	return nil
 }
 
@@ -40,7 +48,9 @@ func GenerateOrders() entity.Order {
 }
 
 func main() {
-	conn, err := amqp.Dial("amqp://guest:guest@localhost:5672/")
+	var url string = os.Getenv("RABBITMQ_DEFAULT_URL")
+
+	conn, err := amqp.Dial(url)
 	if err != nil {
 		panic(err)
 	}
