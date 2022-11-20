@@ -7,3 +7,21 @@ services:
       - "8080:8080"
     env_file:
       - ./.env
+    depends_on:
+      - amqp
+    networks:
+      - resolute
+
+  amqp:
+    image: rabbitmq:3.11-management
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+      - "15692:15692"
+    networks:
+      - resolute
+
+networks:
+  resolute:
+    name: resolute
+    external: true

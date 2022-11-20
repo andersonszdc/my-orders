@@ -1,5 +1,8 @@
-FROM golang:1.19-alpine as builder
+FROM alpine:edge as builder
+RUN apk update
+RUN apk upgrade
+RUN apk add --update go=1.19.3-r0
 WORKDIR /server
 COPY . .
-RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -o server -ldflags="-w -s" ./cmd/consumer/main.go
-ENTRYPOINT ["/server"]
+RUN GOOS=linux GOARCH=amd64 CGO_ENABLED=1 go build -o server -ldflags="-w -s" ./cmd/consumer/main.go
+ENTRYPOINT ["./server"]
