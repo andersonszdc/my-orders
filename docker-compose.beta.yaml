@@ -23,5 +23,4 @@ services:
 
 networks:
   resolute:
-    name: resolute
-    external: true
+    driver: bridge
